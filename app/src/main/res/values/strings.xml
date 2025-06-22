@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">HabitEase</string>
+    <string name="app_logo">App Logo</string>
+
+    <!-- Login Screen -->
+    <string name="username_hint">Enter username</string>
+    <string name="password_hint">Enter Password</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="dont_have_account">Don\'t have an account? </string>
+    <string name="sign_up">Sign Up</string>
+
+    <!-- Fingerprint Section -->
+    <string name="fingerprint_icon_desc">Fingerprint icon</string>
+    <string name="fingerprint_instruction">Log with Finger</string>
+<!-- <string name="login_with_fingerprint">Login with Fingerprint</string>-->
+    <string name="biometric_auth_title">Biometric Login</string>
+    <string name="biometric_auth_subtitle">Authenticate using your fingerprint</string>
+    <string name="use_password_instead">Use Password Instead</string>
+    <string name="fingerprint_success">Authentication successful!</string>
+    <string name="fingerprint_failed">Authentication failed. Try again.</string>
+
+    <!-- Validation Messages -->
+    <string name="username_required">Username is required</string>
+        <string name="password_required">Password is required</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="habitease">HabitEase</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="notifications">Notifications</string>
+    <string name="add_habit">Add Habit</string>
+    <string name="habits_list_description">Habits List Description</string>
+    <string name="edit_habit">Edit Habit</string>
+    <string name="save_habit">SAVE HABIT</string>
+    <string name="only_remind_at_home">Only remind at home</string>
+    <string name="select_time">Select time</string>
+    <string name="habit_name">Habit name</string>
+    <string name="and_make_your_life_easy">and make your life easy</string>
+    <string name="make_your_habit">Make Your Habit</string>
+    <string name="notification_preferences">Notification Preferences</string>
+    <string name="set_home_location">Set Home Location</string>
+    <string name="logout">Logout</string>
+    <string name="home_location">Home Location</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="save_location">SAVE Home LOCATION</string>
+    <string name="back_to_settings">Back to settings</string>
+    <string name="search_location">Search location</string>
+
+</resources>

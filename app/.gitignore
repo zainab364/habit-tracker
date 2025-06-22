@@ -1,0 +1,38 @@
+
+# Gradle files
+.gradle/
+**/build/
+!gradle-wrapper.jar
+/build/
+
+# Local configuration
+local.properties
+.idea/
+*.iml
+
+# Log & temp files
+*.log
+*.tmp
+*.temp
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Generated binary files
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Keystore (only if using signing)
+*.jks
+*.keystore
+
+# Crashlytics and Firebase
+crashlytics.properties
+fabric.properties
+
+# Google Maps API keys (store in `local.properties` or `gradle.properties`)
+google-services.json
