@@ -4,6 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.s23010615.habitease.R;
 import com.s23010615.habitease.database.DBHelper;
 import java.io.IOException;
@@ -20,10 +22,11 @@ import java.util.Locale;
 
 public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private com.google.android.gms.maps.GoogleMap mMap;
     private LatLng selectedLocation;
     private TextInputEditText searchLocation;
     private DBHelper dbHelper;
+    private Button btnSave;
     private static final float DEFAULT_ZOOM = 15f;
 
     @Override
@@ -33,24 +36,24 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
 
         dbHelper = new DBHelper(this);
         searchLocation = findViewById(R.id.searchLocation);
-        MaterialButton btnSave = findViewById(R.id.btnSaveLocation);
-        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnSave = findViewById(R.id.btnSaveLocation);
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        if (mapFragment != null) {
-//            mapFragment.getMapAsync(this);
-//        }
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
         // Handle search location
-        findViewById(R.id.searchContainer).setOnClickListener(v -> performSearch());
+        TextInputLayout searchContainer = findViewById(R.id.searchContainer);
+        searchContainer.setEndIconOnClickListener(v -> performSearch());
 
         // Save selected location
         btnSave.setOnClickListener(v -> {
             if (selectedLocation != null) {
                 boolean success = dbHelper.saveHomeLocation(selectedLocation.latitude, selectedLocation.longitude);
                 if (success) {
-                    Toast.makeText(this, "Location saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Location saved", Toast.LENGTH_SHORT).show();
                     finish(); // Go back to Settings
                 } else {
                     Toast.makeText(this, "Failed to save location", Toast.LENGTH_SHORT).show();
@@ -60,17 +63,23 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
-        // Back button
-        btnBack.setOnClickListener(v -> onBackPressed());
     }
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
+    public void onMapReady(@NonNull com.google.android.gms.maps.GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng defaultLatLng = new LatLng(6.9271, 79.8612); // Colombo
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12));
+        LatLng savedLocation = dbHelper.getSavedHomeLocation();
 
+        if (savedLocation != null) {
+            selectedLocation = savedLocation;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(savedLocation, DEFAULT_ZOOM));
+            mMap.addMarker(new MarkerOptions().position(savedLocation).title("Saved Home Location"));
+        } else {
+            // Default location: Colombo
+            LatLng defaultLatLng = new LatLng(6.9271, 79.8612);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12));
+        }
         // Tap to select location
         mMap.setOnMapClickListener(latLng -> {
             selectedLocation = latLng;
@@ -85,7 +94,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> addressList = geocoder.getFromLocationName(locationText, 1);
-                if (!addressList.isEmpty()) {
+                if (addressList != null && !addressList.isEmpty()) {
                     Address address = addressList.get(0);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));

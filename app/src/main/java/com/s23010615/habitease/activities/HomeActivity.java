@@ -1,11 +1,9 @@
 package com.s23010615.habitease.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,8 +19,6 @@ import com.s23010615.habitease.database.DBHelper;
 import com.s23010615.habitease.models.Habit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
     private static final int ADD_HABIT_REQUEST = 1;

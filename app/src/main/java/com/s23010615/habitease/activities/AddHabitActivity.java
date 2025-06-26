@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton;
 import com.s23010615.habitease.R;
 import com.s23010615.habitease.database.DBHelper;
 import com.s23010615.habitease.models.Habit;
+import com.s23010615.habitease.utils.ReminderUtil;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -108,6 +109,11 @@ public class AddHabitActivity extends AppCompatActivity {
         try {
             long result = dbHelper.addHabit(habit);
             if (result != -1) {
+                // Set the ID returned by the database insert
+                habit.setId((int) result);
+                // Schedule daily reminder for this habit
+                ReminderUtil.scheduleDailyReminder(this, habit.getName(), habit.getTime(),habit.getId(), habit.isHomeOnly());
+
                 // Return the new habit data to HomeActivity
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("new_habit_added", true);
@@ -128,3 +134,7 @@ public class AddHabitActivity extends AppCompatActivity {
         super.onDestroy();
     }
 }
+//// Set the ID returned by the database insert
+//                habit.setId((int) result);
+//        // Schedule daily reminder for this habit
+//        ReminderUtil.scheduleDailyReminder(this, habit.getName(), habit.getTime(),habit.getId(), habit.isHomeOnly());

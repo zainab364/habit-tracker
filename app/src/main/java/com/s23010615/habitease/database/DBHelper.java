@@ -5,6 +5,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.location.Location;
+import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.s23010615.habitease.models.Habit;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +34,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_STREAK_COUNT = "streakCount";
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, 3);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create users table
-        String createUserTable = "CREATE TABLE " + TABLE_USERS + " (" +
+        String createUserTable = "CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_USERNAME + " TEXT UNIQUE, " +
                 COLUMN_PASSWORD + " TEXT)";
         db.execSQL(createUserTable);
 
         // Create habits table
-        String createHabitTable = "CREATE TABLE " + TABLE_HABITS + " (" +
+        String createHabitTable = "CREATE TABLE IF NOT EXISTS " + TABLE_HABITS + " (" +
                 COLUMN_HABIT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_HABIT_NAME + " TEXT, " +
                 COLUMN_HABIT_TIME + " TEXT, " +
@@ -66,6 +70,13 @@ public class DBHelper extends SQLiteOpenHelper {
             // Add streakCount column
             db.execSQL("ALTER TABLE " + TABLE_HABITS +
                     " ADD COLUMN " + COLUMN_STREAK_COUNT + " INTEGER DEFAULT 0");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("DROP TABLE IF EXISTS home_location");
+            db.execSQL("CREATE TABLE IF NOT EXISTS home_location (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "latitude REAL, " +
+                    "longitude REAL)");
         }
     }
 
@@ -158,12 +169,35 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean saveHomeLocation(double lat, double lng) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("id", 1);
         values.put("latitude", lat);
         values.put("longitude", lng);
 
         // Store only one row – you can extend user-specific logic later
         // allows to store only one home location
-        long result = db.replace("home_location", null, values); // replace() ensures that if the user updates their location
+        long result = db.replace("home_location", null, values);
+        Log.d("DBHelper", "Replace result: " + result);
         return result != -1;
     }
+    public LatLng getSavedHomeLocation() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT latitude, longitude FROM home_location WHERE id = 1", null);
+        if (cursor != null && cursor.moveToFirst()) {
+            double lat = cursor.getDouble(0);
+            double lng = cursor.getDouble(1);
+            cursor.close();
+            return new LatLng(lat, lng);
+        }
+        return null;
+    }
+    // Get home location as Android Location
+    public Location getHomeLocation() {
+        LatLng latLng = getSavedHomeLocation();
+        if (latLng == null) return null;
+        Location loc = new Location("");
+        loc.setLatitude(latLng.latitude);
+        loc.setLongitude(latLng.longitude);
+        return loc;
+    }
+
 }

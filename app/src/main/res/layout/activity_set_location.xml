@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +15,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="@color/purple_500">
+        app:boxStrokeColor="@color/purple_500"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/search_icon"
+        app:endIconContentDescription="search" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchLocation"
@@ -22,25 +26,25 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_location"
             android:imeOptions="actionSearch"
-            android:inputType="textAutoComplete"/>
+            android:inputType="text"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Map Fragment (Takes remaining space) -->
-<!--    <FrameLayout-->
-<!--        android:id="@+id/mapContainer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:layout_marginHorizontal="16dp"-->
-<!--        android:layout_marginBottom="0dp">-->
-<!--        <androidx.fragment.app.FragmentContainerView-->
-<!--            android:id="@+id/map"-->
-<!--            android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            tools:context=".activities.SetLocationActivity"-->
-<!--            tools:ignore="UnknownFragment"/>-->
-<!--    </FrameLayout>-->
+    <!-- Map Fragment -->
+    <FrameLayout
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="0dp">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activities.SetLocationActivity"
+            tools:ignore="UnknownFragment"/>
+    </FrameLayout>
     <!-- Save Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveLocation"
@@ -55,16 +59,16 @@
         app:cornerRadius="8dp"/>
 
     <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/arrow_circle_left_24"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/back_to_settings"
-        app:tint="@color/Purple2" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnBack"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginBottom="30dp"-->
+<!--        android:src="@drawable/arrow_circle_left_24"-->
+<!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--        android:contentDescription="@string/back_to_settings"-->
+<!--        app:tint="@color/Purple2" />-->
 
 </LinearLayout>
